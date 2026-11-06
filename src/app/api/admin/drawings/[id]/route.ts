@@ -13,7 +13,7 @@ export async function DELETE(
     }
 
     const { id } = await params;
-    const ok = deleteDrawing(id);
+    const ok = await deleteDrawing(id);
     if (!ok) {
       return NextResponse.json({ error: 'Drawing not found.' }, { status: 404 });
     }

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     }
 
     const voteAction = action === 'unlike' ? 'unlike' : 'like';
-    const result = voteDrawing(drawing_id, voteAction);
+    const result = await voteDrawing(drawing_id, voteAction);
     if (!result.success || !result.drawing) {
       return NextResponse.json({ error: 'Drawing not found.' }, { status: 404 });
     }

@@ -12,8 +12,8 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const format = searchParams.get('format');
 
-    const leaderboard = getLeaderboard();
-    const all = getAllDrawings();
+    const leaderboard = await getLeaderboard();
+    const all = await getAllDrawings();
     const totalVotes = all.reduce((sum, d) => sum + (d.votes || 0), 0);
 
     // CSV Export

@@ -6,7 +6,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search')?.trim().toLowerCase() || '';
 
-    let drawings = getAllDrawings();
+    let drawings = await getAllDrawings();
 
     if (search) {
       drawings = drawings.filter(
