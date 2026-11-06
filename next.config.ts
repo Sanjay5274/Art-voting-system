@@ -1,9 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+      },
+    ],
+  },
   turbopack: {
     rules: {
       "*.css": {
@@ -11,6 +16,30 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
     },
+  },
+  async redirects() {
+    return [
+      {
+        source: "/login",
+        destination: "/admin",
+        permanent: false,
+      },
+      {
+        source: "/gallery",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/organizer",
+        destination: "/admin",
+        permanent: false,
+      },
+      {
+        source: "/organizer/:path*",
+        destination: "/admin",
+        permanent: false,
+      },
+    ];
   },
 };
 
