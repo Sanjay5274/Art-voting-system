@@ -5,12 +5,6 @@ import { getSupabaseAdmin } from '@/lib/supabase-admin';
 import fs from 'fs';
 import path from 'path';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export async function POST(request: Request) {
   try {
     const authenticated = await isAdminAuthenticated();
