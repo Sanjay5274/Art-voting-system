@@ -18,10 +18,11 @@ export async function GET(request: Request) {
 
     // CSV Export
     if (format === 'csv') {
-      let csv = 'Rank,Drawing Number,Title,Votes,Created At\n';
+      let csv = 'Rank,Drawing Number,Title,Total Likes,Liked By (Directors),Created At\n';
       for (const item of leaderboard) {
         const title = `"${(item.drawing_title || '').replace(/"/g, '""')}"`;
-        csv += `${item.rank},${item.drawing_number},${title},${item.votes},${item.created_at}\n`;
+        const likedBy = `"${(item.liked_by || '—').replace(/"/g, '""')}"`;
+        csv += `${item.rank},${item.drawing_number},${title},${item.votes},${likedBy},${item.created_at}\n`;
       }
 
       return new Response(csv, {
@@ -41,4 +42,3 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: error.message || 'Failed to fetch results.' }, { status: 500 });
   }
 }
-

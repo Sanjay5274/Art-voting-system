@@ -4,14 +4,22 @@ import { voteDrawing } from '@/lib/store';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { drawing_id, action = 'like' } = body;
+    const { drawing_id, director_name, action = 'like' } = body;
 
     if (!drawing_id || typeof drawing_id !== 'string') {
       return NextResponse.json({ error: 'Drawing ID is required.' }, { status: 400 });
     }
 
+    const cleanName = (director_name || '').trim();
+    if (!cleanName) {
+      return NextResponse.json(
+        { error: 'Please enter your name to like this drawing.' },
+        { status: 400 }
+      );
+    }
+
     const voteAction = action === 'unlike' ? 'unlike' : 'like';
-    const result = await voteDrawing(drawing_id, voteAction);
+    const result = await voteDrawing(drawing_id, cleanName, voteAction);
     if (!result.success || !result.drawing) {
       return NextResponse.json({ error: 'Drawing not found.' }, { status: 404 });
     }
@@ -21,10 +29,11 @@ export async function POST(request: Request) {
       action: voteAction,
       message:
         voteAction === 'like'
-          ? `Liked ${result.drawing.drawing_number}!`
+          ? `${cleanName} liked ${result.drawing.drawing_number}!`
           : `Removed like from ${result.drawing.drawing_number}`,
       drawing_number: result.drawing.drawing_number,
       totalVotes: result.totalVotes,
+      liked_by: result.liked_by,
     });
   } catch (error: any) {
     return NextResponse.json(

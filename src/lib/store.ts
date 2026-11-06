@@ -8,6 +8,7 @@ export interface DrawingItem {
   drawing_title: string;
   image_path: string;
   votes: number;
+  liked_by?: string;
   created_at: string;
 }
 
@@ -48,15 +49,36 @@ function saveLocalDrawings(drawings: DrawingItem[]): void {
     ensureLocalDataFile();
     fs.writeFileSync(DATA_FILE, JSON.stringify(drawings, null, 2), 'utf-8');
   } catch {
-    // Ignore on read-only environments like Vercel
+    // Ignore on read-only environments
   }
+}
+
+export function parseLikedBy(likedBy?: string): string[] {
+  if (!likedBy) return [];
+  return likedBy
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+export function formatLikedBy(names: string[]): string {
+  const unique: string[] = [];
+  const seen = new Set<string>();
+  for (const n of names) {
+    const key = n.trim().toLowerCase();
+    if (key && !seen.has(key)) {
+      seen.add(key);
+      unique.push(n.trim());
+    }
+  }
+  return unique.join(', ');
 }
 
 export async function getAllDrawings(): Promise<DrawingItem[]> {
   if (isDatabaseConfigured()) {
     try {
       const rows = await query<DrawingItem>(
-        `SELECT id, drawing_number, drawing_title, image_path, votes, created_at 
+        `SELECT id, drawing_number, drawing_title, image_path, votes, COALESCE(liked_by, '') as liked_by, created_at 
          FROM drawings 
          ORDER BY drawing_number ASC`
       );
@@ -95,14 +117,15 @@ export async function addDrawings(
       drawing_title: file.title || `Drawing ${drawingNumber}`,
       image_path: file.image_path,
       votes: 0,
+      liked_by: '',
       created_at: new Date().toISOString(),
     };
 
     if (isDatabaseConfigured()) {
       try {
         await query(
-          `INSERT INTO drawings (id, drawing_number, drawing_title, image_path, votes, created_at)
-           VALUES ($1, $2, $3, $4, 0, NOW())`,
+          `INSERT INTO drawings (id, drawing_number, drawing_title, image_path, votes, liked_by, created_at)
+           VALUES ($1, $2, $3, $4, 0, '', NOW())`,
           [item.id, item.drawing_number, item.drawing_title, item.image_path]
         );
       } catch (err) {
@@ -122,21 +145,50 @@ export async function addDrawings(
 
 export async function voteDrawing(
   id: string,
+  directorName: string,
   action: 'like' | 'unlike' = 'like'
-): Promise<{ success: boolean; drawing?: DrawingItem; totalVotes?: number }> {
-  const delta = action === 'unlike' ? -1 : 1;
+): Promise<{ success: boolean; drawing?: DrawingItem; totalVotes?: number; liked_by?: string }> {
+  const cleanName = (directorName || '').trim();
+  if (!cleanName) {
+    return { success: false };
+  }
+
+  const current = await getAllDrawings();
+  const existing = current.find((d) => d.id === id);
+  if (!existing) {
+    return { success: false };
+  }
+
+  let names = parseLikedBy(existing.liked_by);
+
+  if (action === 'like') {
+    const alreadyLiked = names.some((n) => n.toLowerCase() === cleanName.toLowerCase());
+    if (!alreadyLiked) {
+      names.push(cleanName);
+    }
+  } else {
+    names = names.filter((n) => n.toLowerCase() !== cleanName.toLowerCase());
+  }
+
+  const newVotes = names.length;
+  const newLikedBy = formatLikedBy(names);
 
   if (isDatabaseConfigured()) {
     try {
       const rows = await query<DrawingItem>(
         `UPDATE drawings 
-         SET votes = GREATEST(0, votes + $1) 
-         WHERE id = $2 
-         RETURNING id, drawing_number, drawing_title, image_path, votes, created_at`,
-        [delta, id]
+         SET votes = $1, liked_by = $2 
+         WHERE id = $3 
+         RETURNING id, drawing_number, drawing_title, image_path, votes, liked_by, created_at`,
+        [newVotes, newLikedBy, id]
       );
       if (rows && rows.length > 0) {
-        return { success: true, drawing: rows[0], totalVotes: rows[0].votes };
+        return {
+          success: true,
+          drawing: rows[0],
+          totalVotes: rows[0].votes,
+          liked_by: rows[0].liked_by,
+        };
       }
     } catch (err) {
       console.error('Neon vote update failed, falling back to local store:', err);
@@ -144,18 +196,21 @@ export async function voteDrawing(
   }
 
   // Local fallback
-  const current = getLocalDrawings();
-  const item = current.find((d) => d.id === id);
-  if (!item) {
-    return { success: false };
+  const localList = getLocalDrawings();
+  const localItem = localList.find((d) => d.id === id);
+  if (localItem) {
+    localItem.votes = newVotes;
+    localItem.liked_by = newLikedBy;
+    saveLocalDrawings(localList);
+    return {
+      success: true,
+      drawing: localItem,
+      totalVotes: localItem.votes,
+      liked_by: localItem.liked_by,
+    };
   }
-  if (action === 'unlike') {
-    item.votes = Math.max(0, (item.votes || 0) - 1);
-  } else {
-    item.votes = (item.votes || 0) + 1;
-  }
-  saveLocalDrawings(current);
-  return { success: true, drawing: item, totalVotes: item.votes };
+
+  return { success: false };
 }
 
 export async function deleteDrawing(id: string): Promise<boolean> {
@@ -187,7 +242,7 @@ export async function clearAllDrawings(): Promise<void> {
 export async function resetAllVotes(): Promise<void> {
   if (isDatabaseConfigured()) {
     try {
-      await query('UPDATE drawings SET votes = 0');
+      await query("UPDATE drawings SET votes = 0, liked_by = ''");
     } catch (err) {
       console.error('Neon reset votes failed:', err);
     }
@@ -196,6 +251,7 @@ export async function resetAllVotes(): Promise<void> {
   const current = getLocalDrawings();
   for (const item of current) {
     item.votes = 0;
+    item.liked_by = '';
   }
   saveLocalDrawings(current);
 }

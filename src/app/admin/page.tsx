@@ -568,7 +568,8 @@ export default function AdminPage() {
                         <th className="py-3 px-4">Drawing</th>
                         <th className="py-3 px-4">ID</th>
                         <th className="py-3 px-4">Title</th>
-                        <th className="py-3 px-4 text-right">Likes</th>
+                        <th className="py-3 px-4 text-center">Likes</th>
+                        <th className="py-3 px-4">Liked By (Directors)</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -606,8 +607,24 @@ export default function AdminPage() {
                           <td className="py-3.5 px-4 text-slate-700 font-medium">
                             {item.drawing_title || '—'}
                           </td>
-                          <td className="py-3.5 px-4 text-right font-black text-slate-900 text-base">
+                          <td className="py-3.5 px-4 text-center font-black text-rose-600 text-base">
                             {item.votes}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            {item.liked_by ? (
+                              <div className="flex flex-wrap gap-1 max-w-sm">
+                                {item.liked_by.split(',').map((name, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="px-2 py-0.5 rounded-md bg-rose-50 text-rose-800 border border-rose-200 text-[11px] font-semibold"
+                                  >
+                                    {name.trim()}
+                                  </span>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className="text-slate-400 text-xs">—</span>
+                            )}
                           </td>
                         </tr>
                       ))}
