@@ -119,3 +119,4 @@ export const NameModal: React.FC<NameModalProps> = ({
     </div>
   );
 };
+
