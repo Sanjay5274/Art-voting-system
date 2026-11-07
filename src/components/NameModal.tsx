@@ -77,7 +77,7 @@ export const NameModal: React.FC<NameModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-              Director Name
+              Enter Your Name
             </label>
             <div className="relative">
               <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -90,7 +90,7 @@ export const NameModal: React.FC<NameModalProps> = ({
                   setName(e.target.value);
                   if (error) setError(null);
                 }}
-                placeholder="e.g. Director Ramesh"
+                placeholder="Enter your name..."
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50"
               />
             </div>
