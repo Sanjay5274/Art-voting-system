@@ -5,14 +5,13 @@ import { Header } from '@/components/Header';
 import { DrawingCard } from '@/components/DrawingCard';
 import { ImageModal } from '@/components/ImageModal';
 import { NameModal } from '@/components/NameModal';
-import { Search, Heart, Flame, User } from 'lucide-react';
+import { Search, Heart, User } from 'lucide-react';
 import { DrawingItem } from '@/lib/store';
 
 export default function HomePage() {
   const [drawings, setDrawings] = useState<DrawingItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState<'id' | 'likes'>('id');
   const [directorName, setDirectorName] = useState<string>('');
   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   const [pendingDrawing, setPendingDrawing] = useState<DrawingItem | null>(null);
@@ -140,14 +139,10 @@ export default function HomePage() {
     }
   };
 
-  // Sort drawings according to selected filter
-  const displayedDrawings = [...drawings].sort((a, b) => {
-    if (sortBy === 'likes') {
-      if (b.votes !== a.votes) return (b.votes || 0) - (a.votes || 0);
-      return a.drawing_number.localeCompare(b.drawing_number);
-    }
-    return a.drawing_number.localeCompare(b.drawing_number);
-  });
+  // Sort drawings by drawing number
+  const displayedDrawings = [...drawings].sort((a, b) =>
+    a.drawing_number.localeCompare(b.drawing_number, undefined, { numeric: true })
+  );
 
   const totalLikes = drawings.reduce((sum, d) => sum + (d.votes || 0), 0);
 
@@ -235,9 +230,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Search & Sort Controls */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-          <div className="relative flex-1 max-w-md">
+        {/* Search Controls */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs">
+          <div className="relative w-full max-w-md">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
@@ -246,31 +241,6 @@ export default function HomePage() {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50/50"
             />
-          </div>
-
-          {/* Sort Buttons */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSortBy('id')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-colors ${
-                sortBy === 'id'
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
-            >
-              Order by ID
-            </button>
-            <button
-              onClick={() => setSortBy('likes')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 ${
-                sortBy === 'likes'
-                  ? 'bg-rose-600 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
-            >
-              <Flame className="w-3.5 h-3.5" />
-              <span>Most Liked 🏆</span>
-            </button>
           </div>
         </div>
 
