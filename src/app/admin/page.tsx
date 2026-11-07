@@ -569,7 +569,7 @@ export default function AdminPage() {
                         <th className="py-3 px-4">ID</th>
                         <th className="py-3 px-4">Title</th>
                         <th className="py-3 px-4 text-center">Likes</th>
-                        <th className="py-3 px-4">Liked By (Directors)</th>
+                        <th className="py-3 px-4">Voters Name</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">

@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 
     // CSV Export
     if (format === 'csv') {
-      let csv = 'Rank,Drawing Number,Title,Total Likes,Liked By (Directors),Created At\n';
+      let csv = 'Rank,Drawing Number,Title,Total Likes,Voters Name,Created At\n';
       for (const item of leaderboard) {
         const title = `"${(item.drawing_title || '').replace(/"/g, '""')}"`;
         const likedBy = `"${(item.liked_by || '—').replace(/"/g, '""')}"`;
