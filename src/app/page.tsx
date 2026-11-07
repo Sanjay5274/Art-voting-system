@@ -201,12 +201,12 @@ export default function HomePage() {
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Drawing Competition
+              6&apos;s Logo Creation Contest
             </h1>
             <p className="text-sm sm:text-base text-slate-600">
-              Welcome Directors. Please browse through the student drawings below and click{' '}
+              Please review the submitted logo designs below and click{' '}
               <strong className="text-rose-600 font-semibold">&ldquo;Like (❤️)&rdquo;</strong> on your
-              favourite artwork. The drawing with the most likes will be declared the winner!
+              favourite design. The logo with the most likes will be selected as the winner!
             </p>
           </div>
 
@@ -214,7 +214,7 @@ export default function HomePage() {
             <div className="text-center">
               <span className="block text-2xl font-black text-slate-900">{drawings.length}</span>
               <span className="text-xs text-slate-500 font-medium uppercase tracking-wider">
-                Drawings
+                Total Logos
               </span>
             </div>
             <div className="h-8 w-px bg-slate-200" />
@@ -236,7 +236,7 @@ export default function HomePage() {
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search drawings by ID (e.g. DRW-001)..."
+              placeholder="Search logos by ID (e.g. DRW-001)..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 bg-slate-50/50"
@@ -247,13 +247,13 @@ export default function HomePage() {
         {/* Gallery Grid or Empty State */}
         {loading ? (
           <div className="py-20 text-center text-slate-400 font-medium text-sm">
-            Loading drawings...
+            Loading logos...
           </div>
         ) : drawings.length === 0 ? (
           <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-3 shadow-xs">
-            <h3 className="text-lg font-bold text-slate-800">No drawings uploaded yet</h3>
+            <h3 className="text-lg font-bold text-slate-800">No logos uploaded yet</h3>
             <p className="text-sm text-slate-500 max-w-md mx-auto">
-              Drawings will appear here as soon as the administrator uploads them from the admin panel.
+              Logo submissions will appear here once the administrator uploads them from the admin panel.
             </p>
           </div>
         ) : (

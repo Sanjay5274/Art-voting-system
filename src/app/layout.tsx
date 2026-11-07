@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'SCM Garments Pvt Ltd – Drawing Competition',
-  description: 'Drawing Competition Voting Portal - SCM Garments Pvt Ltd',
+  title: "SCM Garments Pvt Ltd – 6's Logo Creation Contest",
+  description: "6's Logo Creation Contest Voting Portal - SCM Garments Pvt Ltd",
 };
 
 export default function RootLayout({

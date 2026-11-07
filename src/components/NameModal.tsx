@@ -63,7 +63,7 @@ export const NameModal: React.FC<NameModalProps> = ({
               {drawingNumber ? `Like ${drawingNumber}` : 'Enter Your Name'}
             </h2>
             <p className="text-xs text-slate-500 font-medium">
-              Please enter your name so your like is recorded on the leaderboard.
+              Please enter your name so your like is recorded.
             </p>
           </div>
         </div>
@@ -95,7 +95,7 @@ export const NameModal: React.FC<NameModalProps> = ({
               />
             </div>
             <p className="text-[11px] text-slate-400 mt-1">
-              Your name will be saved on this device so you can like other drawings with 1 click.
+              Your name will be saved on this device so you can like other logos with 1 click.
             </p>
           </div>
 

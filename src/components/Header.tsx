@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({ isAdmin = false }) => {
               SCM Garments Pvt Ltd
             </span>
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Drawing Competition
+              6&apos;s Logo Creation Contest
             </span>
           </div>
         </Link>

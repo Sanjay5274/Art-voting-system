@@ -214,7 +214,7 @@ export default function AdminPage() {
             <img src="/logo.png" alt="SCM Garments" className="h-16 w-auto object-contain mb-2" />
             <h1 className="text-xl font-extrabold text-slate-900">SCM Garments Pvt Ltd</h1>
             <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
-              Drawing Competition Admin Portal
+              6&apos;s Logo Creation Contest Admin Portal
             </p>
           </div>
 
@@ -325,7 +325,7 @@ export default function AdminPage() {
             }`}
           >
             <UploadCloud className="w-4 h-4" />
-            <span>Upload Drawings ({drawings.length})</span>
+            <span>Upload Logos ({drawings.length})</span>
           </button>
 
           <button
@@ -349,10 +349,10 @@ export default function AdminPage() {
             {/* Upload Box */}
             <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
               <div>
-                <h2 className="text-xl font-extrabold text-slate-900">Upload Student Drawings</h2>
+                <h2 className="text-xl font-extrabold text-slate-900">Upload Logo Designs</h2>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  Select drawings from your computer. You can upload multiple files at once (e.g. 60+ images).
-                  Drawings will automatically receive sequential IDs (DRW-001, DRW-002...).
+                  Select logo images from your computer. You can upload multiple files at once.
+                  Each submission will be numbered sequentially (DRW-001, DRW-002...).
                 </p>
               </div>
 
@@ -381,7 +381,7 @@ export default function AdminPage() {
                       <FileImage className="w-6 h-6" />
                     </div>
                     <span className="font-bold text-sm text-slate-800">
-                      Click to browse or drag and drop images here
+                      Click to browse or drag and drop logo images here
                     </span>
                     <span className="text-xs text-slate-400">
                       Supports JPG, JPEG, PNG, and WEBP formats
@@ -425,7 +425,7 @@ export default function AdminPage() {
                 >
                   {uploading
                     ? 'Uploading...'
-                    : `Upload ${selectedFiles.length > 0 ? selectedFiles.length : ''} Drawings`}
+                    : `Upload ${selectedFiles.length > 0 ? selectedFiles.length : ''} Logos`}
                 </button>
               </form>
             </div>
@@ -435,10 +435,10 @@ export default function AdminPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-lg font-extrabold text-slate-900">
-                    Uploaded Drawings ({drawings.length})
+                    Uploaded Logos ({drawings.length})
                   </h3>
                   <p className="text-xs text-slate-500">
-                    All drawings currently live and visible on the voting page.
+                    All logo submissions currently visible on the voting page.
                   </p>
                 </div>
 
@@ -447,14 +447,14 @@ export default function AdminPage() {
                     onClick={handleClearAll}
                     className="px-3.5 py-2 rounded-xl text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 transition-colors"
                   >
-                    Clear All Drawings
+                    Clear All Logos
                   </button>
                 )}
               </div>
 
               {drawings.length === 0 ? (
                 <div className="py-12 text-center text-slate-400 text-sm">
-                  No drawings uploaded yet. Use the upload box above to add student drawings.
+                  No logos uploaded yet. Use the upload box above to add logo designs.
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 pt-2">
@@ -480,7 +480,7 @@ export default function AdminPage() {
                         <button
                           onClick={() => handleDeleteDrawing(item.id, item.drawing_number)}
                           className="text-slate-400 hover:text-rose-600 transition-colors p-1"
-                          title="Delete drawing"
+                          title="Delete logo"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -500,7 +500,7 @@ export default function AdminPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Total Drawings
+                  Total Logos
                 </span>
                 <span className="block text-3xl font-black text-slate-900">{drawings.length}</span>
               </div>
@@ -514,7 +514,7 @@ export default function AdminPage() {
 
               <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Leading Drawing 🏆
+                  Leading Logo 🏆
                 </span>
                 <span className="block text-3xl font-black text-slate-900">
                   {leaderboard.length > 0 && leaderboard[0].votes > 0
@@ -557,7 +557,7 @@ export default function AdminPage() {
 
               {leaderboard.length === 0 ? (
                 <div className="py-12 text-center text-slate-400 text-sm">
-                  No drawings or votes recorded yet.
+                  No logos or votes recorded yet.
                 </div>
               ) : (
                 <div className="overflow-x-auto">
@@ -565,7 +565,7 @@ export default function AdminPage() {
                     <thead>
                       <tr className="border-b border-slate-200 text-slate-500 uppercase font-bold text-[11px] tracking-wider">
                         <th className="py-3 px-4">Rank</th>
-                        <th className="py-3 px-4">Drawing</th>
+                        <th className="py-3 px-4">Logo</th>
                         <th className="py-3 px-4">ID</th>
                         <th className="py-3 px-4">Title</th>
                         <th className="py-3 px-4 text-center">Likes</th>

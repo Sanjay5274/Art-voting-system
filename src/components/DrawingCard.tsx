@@ -124,7 +124,7 @@ export const DrawingCard: React.FC<DrawingCardProps> = ({
               hasVoted ? 'fill-rose-500 text-rose-500 scale-110' : 'text-white'
             }`}
           />
-          <span>{hasVoted ? 'Liked (Click to unlike)' : 'Like this Drawing'}</span>
+          <span>{hasVoted ? 'Liked (Click to unlike)' : 'Like this Logo'}</span>
         </button>
       </div>
     </div>
